@@ -1,10 +1,13 @@
 package de.hspf.scraper;
 
+import com.gargoylesoftware.htmlunit.Page;
+import com.gargoylesoftware.htmlunit.ScriptResult;
 import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +30,6 @@ public class ScraperService {
             webClient.getOptions().setJavaScriptEnabled(true);
             webClient.getOptions().setTimeout(2000);
             webClient.getOptions().setUseInsecureSSL(true);
-            // overcome problems in JavaScript
             webClient.getOptions().setThrowExceptionOnScriptError(false);
             webClient.getOptions().setPrintContentOnFailingStatusCode(false);
             webClient.setCssErrorHandler(new SilentCssErrorHandler());
@@ -49,6 +51,7 @@ public class ScraperService {
                 Departure departure = new Departure();
                 departure.setDestination(row.getCell(5).asText());
                 departure.setTime(row.getCell(1).asText());
+                departure.setActualTime(row.getCell(2).asText());
                 departure.setTransportationNumber(row.getCell(4).asText());
                 HtmlElement transportationType = (HtmlElement) row.getByXPath("//img").get(1);
                 departure.setTransportationType(transportationType.getAttribute("alt"));
@@ -58,7 +61,9 @@ public class ScraperService {
         }catch (Exception e){
 
         }
-        departureList.remove(0);
+        try {
+            departureList.remove(0);
+        }catch (Exception e){};
         return departureList;
     }
 }

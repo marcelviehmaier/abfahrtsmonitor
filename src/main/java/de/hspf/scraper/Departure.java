@@ -2,6 +2,7 @@ package de.hspf.scraper;
 
 public class Departure {
     private String time;
+    private String actualTime;
     private String transportationType;
     private String transportationNumber;
     private String destination;
@@ -36,5 +37,13 @@ public class Departure {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public String getActualTime() {
+        return actualTime;
+    }
+
+    public void setActualTime(String actualTime) {
+        this.actualTime = actualTime;
     }
 }
